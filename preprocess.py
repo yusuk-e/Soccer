@@ -77,7 +77,7 @@ def input_play():
     for row in reader:
         flag = 0#欠損など問題のあるログを削除するためのフラグ
 
-        if len(row[0]) == 0 or toNumber(row[0]) == "False":
+        if toNumber(row[0]) == "False":
             flag = 1
         else:
             game_id = int(row[0])
@@ -91,13 +91,13 @@ def input_play():
                 flag2 = 1#一つ目のログを識別するためのフラグ
 
             #--game_status--
-            if len(row[2]) == 0 or toNumber(row[2]) == "False":
+            if toNumber(row[2]) == "False":
                 flag = 1
             else:
                 game_status = int(row[2])#game_status:前半1or後半2
 
             #--team--
-                if len(row[3]) == 0 or int(row[3]) == 0 or toNumber(row[3]) == "False":#row[3]==0:前後半開始終了,中断を除く
+                if int(row[3]) == 0 or toNumber(row[3]) == "False":#row[3]==0:前後半開始終了,中断を除く
                     flag = 1
                 else:
                     team_id = int(row[3])
@@ -108,7 +108,7 @@ def input_play():
                         #print "%d %s" % (team_id, team_dic[team_id])
 
             #--player--
-            if len(row[7]) == 0 or toNumber(row[7]) == "False":
+            if toNumber(row[7]) == "False":
                 flag = 1
             else:
                 player_id = int(row[7])
@@ -117,7 +117,7 @@ def input_play():
                     player_dic[team_id][player_id] = player_name
 
             #--action--
-            if len(row[9]) == 0 or toNumber(row[9]) == "False":
+            if toNumber(row[9]) == "False":
                 flag = 1
             else:
                 action_id = int(row[9])
@@ -127,13 +127,13 @@ def input_play():
                     #print "%d %s" % (action_id, action_dic[action_id])
 
             #--home away--
-            if len(row[12]) == 0 or toNumber(row[12]) == "False":
+            if toNumber(row[12]) == "False":
                 flag = 1
             else:
                 h_a = int(row[12])#1:home, 2:away
 
             #--offense no--
-            if len(row[13]) == 0 or toNumber(row[13]) == "False":
+            if toNumber(row[13]) == "False":
                 flag = 1
             else:
                 offense_no = int(row[13])
@@ -141,7 +141,7 @@ def input_play():
                     offense_nos[game_id].append(offense_no)
 
             #--x axis--
-            if len(row[15]) == 0:
+            if toNumber(row[15]) == "False":
                 flag = 1
             else:
                 x = float(row[15]) * 100 / 3
@@ -149,7 +149,7 @@ def input_play():
                     flag = 1
                 
             #--y axis--
-            if len(row[16]) == 0:
+            if toNumber(row[16]) == "False":
                 flag = 1
             else:
                 y = float(row[16]) * -1 * 100 / 3
@@ -158,7 +158,7 @@ def input_play():
                 #x,y座標の変換（トラッキングデータに合わせる）
 
             #--direction--攻撃方向
-            if len(row[17]) == 0 or toNumber(row[17]) == "False":
+            if toNumber(row[17]) == "False":
                 flag = 1
             else:
                 d = int(row[17])
@@ -252,7 +252,7 @@ def input_tracking():
                         if len(player_loc) == 6:
 
                             #--home or away--
-                            if len(player_loc[0]) == 0 or toNumber(player_loc[0]) == "False":
+                            if toNumber(player_loc[0]) == "False":
                                 flag = 1
                             else:
                                 h_a = player_loc[0]
@@ -265,22 +265,15 @@ def input_tracking():
                                     flag = 1
         
                             #--player--
-                            if len(player_loc[2]) == 0 or \
-                                    len(player_loc[2].rstrip("\r\n").split(".")) != 1 or \
+                            if len(player_loc[2].rstrip("\r\n").split(".")) != 1 or \
                                     toNumber(player_loc[2]) == "False":
                                 flag = 1
                             else:
                                 player_id = int(player_loc[2])
         
                             #--x axis--
-                            if len(player_loc[3]) == 0 or \
-                                    player_loc[3] == "-" or \
-                                    toNumber(player_loc[3]) == "False" or \
-                                    len(player_loc[3].rstrip("\r\n").split(".")) != 1 or \
-                                    len(player_loc[3].rstrip("\r\n").split("-")) > 2:
-                                flag = 1
-                            elif len(player_loc[3].rstrip("\r\n").split("-")) == 2 and \
-                                    len(player_loc[3].rstrip("\r\n").split("-")[0]) != 0:
+                            if toNumber(player_loc[3]) == "False" or \
+                                    len(player_loc[3].rstrip("\r\n").split(".")) != 1:
                                 flag = 1
                             else:
                                 x = float(player_loc[3])
@@ -288,14 +281,8 @@ def input_tracking():
                                     flag = 1
         
                             #--y axis--
-                            if len(player_loc[4]) == 0 or \
-                                    player_loc[4] == "-" or \
-                                    toNumber(player_loc[4]) == "False" or \
-                                    len(player_loc[4].rstrip("\r\n").split(".")) != 1 or \
-                                    len(player_loc[4].rstrip("\r\n").split("-")) > 2:
-                                flag = 1
-                            elif len(player_loc[4].rstrip("\r\n").split("-")) == 2 and \
-                                    len(player_loc[4].rstrip("\r\n").split("-")[0]) != 0:
+                            if toNumber(player_loc[4]) == "False" or \
+                                    len(player_loc[4].rstrip("\r\n").split(".")) != 1:
                                 flag = 1
                             else:
                                 y = float(player_loc[4])
@@ -389,7 +376,7 @@ def process():
     reverse()#前後半で反転させる
     print "reverse:%f" % (time()-t0)
 
-    print "\n"
+    #print "\n"
 
 
 def play_time_convert():
@@ -577,7 +564,7 @@ def output():
     file_output()#データをファイルに出力
     print "file output:%f" % (time()-t0)
 
-    print "\n"
+    #print "\n"
 
 
 def file_output():
@@ -660,7 +647,7 @@ def vis():
     vis_ball_player()#ボールとプレイヤー軌跡を描写
     print "vis_ball_player:%f" % (time()-t0)
 
-    print "\n"
+    #print "\n"
 
 def vis_ball():
 #--ボール軌跡を描写--
